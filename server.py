@@ -27,9 +27,14 @@ import os
 
 # try: curl -v -X GET http://127.0.0.1:8080/
 
+# Name: Preston Ling
+# ccid: pling
+# Student #: 1535780
+
 REQUEST_TYPE_KEY = "Request-type"
 PATH_KEY = "Path"
 HTTP_VERSION_KEY = "Http-version"
+RESOURCE_ROOT = "www"
 
 class MyWebServer(socketserver.BaseRequestHandler):
     
@@ -40,7 +45,7 @@ class MyWebServer(socketserver.BaseRequestHandler):
         request_type = http_request_info[REQUEST_TYPE_KEY]
         if request_type == "GET":
             
-            filepath = "www" + http_request_info[PATH_KEY]
+            filepath = RESOURCE_ROOT + http_request_info[PATH_KEY]
             filepath, redirection_done = get_updated_filepath(filepath)
             is_malicious_request = check_malicious_path(filepath)
             file_exists = os.path.exists(filepath)
