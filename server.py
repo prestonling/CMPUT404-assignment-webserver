@@ -35,14 +35,9 @@ class MyWebServer(socketserver.BaseRequestHandler):
     
     def handle(self):
         self.data = self.request.recv(1024).strip()
-        print ("Got a request of: %s\n" % self.data)
-        print(os.getcwd())
         http_request_info = get_http_info(self.data.decode())
 
-        
         request_type = http_request_info[REQUEST_TYPE_KEY]
-        print("request_type:")
-        print(request_type) 
         if request_type == "GET":
             
             filepath = "www" + http_request_info[PATH_KEY]
@@ -50,8 +45,6 @@ class MyWebServer(socketserver.BaseRequestHandler):
             is_malicious_request = check_malicious_path(filepath)
             file_exists = os.path.exists(filepath)
             filename, extension = os.path.splitext(http_request_info[PATH_KEY])
-            # print("filename: ", filename)
-            # print("extension: ", extension)
 
             if is_malicious_request:
                 header = 'HTTP/1.1 404 Resource not found\r\n'
@@ -75,7 +68,6 @@ class MyWebServer(socketserver.BaseRequestHandler):
         else:
             header = 'HTTP/1.1 405 Method Not Allowed\r\n'
             self.request.sendall(header.encode())
-            # print("got not a GET request")
 
 #returns True if file is part of response
 #return False if file is not part of response
